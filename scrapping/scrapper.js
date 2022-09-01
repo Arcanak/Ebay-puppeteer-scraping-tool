@@ -15,7 +15,11 @@ const puppeteer = require('puppeteer');
     await getCompletedOrders(page);    
 })();
 
-async function getCompletedOrders(page){
+/**
+ * 
+ * @param {puppeteer.Page} page 
+ */
+async function getCompletedOrders(page) {
     const prompt = require("prompt-sync")({ sigint: true });
     const search = prompt("Input search: ");
     await page.goto('https://www.ebay.com/');
@@ -33,6 +37,10 @@ async function getCompletedOrders(page){
     
     // Only buy it now
     await page.waitForSelector('div.srp-controls__default-refinements.clearfix');
-    console.log("found");
     await page.click('div.srp-controls__default-refinements.clearfix > div.srp-controls--responsive.srp-controls__row-cells.left > div.srp-controls__control--responsive > div > ul > li:nth-child(4) > a');
+    // New and used
+    await page.waitForSelector('body > div.srp-main.srp-main--isLarge > div.srp-rail__left > ul > li:nth-child(1) > ul > li:nth-child(3) > .x-refine__group > ul');
+    await page.click('body > div.srp-main.srp-main--isLarge > div.srp-rail__left > ul > li:nth-child(1) > ul > li:nth-child(3) > .x-refine__group > ul > li:nth-child(1) > .x-refine__multi-select > a');
+    await page.waitForSelector('body > div.srp-main.srp-main--isLarge > div.srp-rail__left > ul > li:nth-child(1) > ul > li:nth-child(3) > .x-refine__group > ul');
+    await page.click('body > div.srp-main.srp-main--isLarge > div.srp-rail__left > ul > li:nth-child(1) > ul > li:nth-child(3) > .x-refine__group > ul > li:nth-child(4) > .x-refine__multi-select > a');
 }
