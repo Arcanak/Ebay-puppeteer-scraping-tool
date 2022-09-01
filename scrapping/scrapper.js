@@ -26,14 +26,14 @@ async function getCompletedOrders(page) {
     await page.waitForSelector('#gh-ac');
     await page.type('#gh-ac', search);
     await page.click('input[type="submit"]');
-    const checkboxes = 'body > div.srp-main.srp-main--isLarge > div.srp-rail__left > ul > li:nth-child(1) > ul > .x-refine__main__list';
+    const checkboxes = 'body > div.srp-main.srp-main--isLarge > div.srp-rail__left > ul > li:nth-child(1) > ul > li';
     await page.waitForSelector(checkboxes);
     //await page.waitForSelector('body > div.srp-main.srp-main--isLarge > div.srp-rail__left > ul > li:nth-child(1) > ul > li:nth-child(7) > .x-refine__group > ul');
     //const checkboxes = 'body > div.srp-main.srp-main--isLarge > div.srp-rail__left > ul > li:nth-child(1) > ul > li:nth-child(7) > .x-refine__group > ul';
     const elements = await page.$$eval(checkboxes, (elements) => {
        return elements.map(elem => elem.innerText);
     });
-    await page.click('body > div.srp-main.srp-main--isLarge > div.srp-rail__left > ul > li:nth-child(1) > ul > li:nth-child(' + (elements.length + 1)  + ') > .x-refine__group > ul > li:nth-child(5) > .x-refine__multi-select > a');
+    await page.click('body > div.srp-main.srp-main--isLarge > div.srp-rail__left > ul > li:nth-child(1) > ul > li:nth-child(' + (elements.length)  + ') > .x-refine__group > ul > li:nth-child(5) > .x-refine__multi-select > a');
     
     // Only buy it now
     await page.waitForSelector('div.srp-controls__default-refinements.clearfix');
@@ -43,4 +43,14 @@ async function getCompletedOrders(page) {
     await page.click('body > div.srp-main.srp-main--isLarge > div.srp-rail__left > ul > li:nth-child(1) > ul > li:nth-child(3) > .x-refine__group > ul > li:nth-child(1) > .x-refine__multi-select > a');
     await page.waitForSelector('body > div.srp-main.srp-main--isLarge > div.srp-rail__left > ul > li:nth-child(1) > ul > li:nth-child(3) > .x-refine__group > ul');
     await page.click('body > div.srp-main.srp-main--isLarge > div.srp-rail__left > ul > li:nth-child(1) > ul > li:nth-child(3) > .x-refine__group > ul > li:nth-child(4) > .x-refine__multi-select > a');
+    // Info about items
+    await page.waitForSelector('#srp-river-results > ul');
+    // build item object
+    const items = await page.$$eval('#srp-river-results > ul > li.s-item', (elements) => {
+        return elements.map(elem => elem.children);
+    }).catch(err => {
+        console.log(err);
+    });
+    console.log(items);
+
 }
